@@ -1,18 +1,72 @@
 template <typename T>
 void ArrayList<T>::bubbleSort() {
-    // TODO
+    // Outer loop controls the number of passes
+    // After i passes, the last i elements are sorted
+    for (int i = 0; i < this->length - 1; i++) {
+        bool swapped = false; // Optimization: stop if list is sorted
+        
+        // Inner loop performs adjacent comparisons
+        for (int j = 0; j < this->length - 1 - i; j++) {
+            // Increment for the comparison
+            numComps++;
+            if (buffer[j] > buffer[j + 1]) {
+                // Perform the swap
+                swap(j, j + 1);
+                numSwaps++;
+                swapped = true;
+            }
+        }
+
+        // If no swaps were made in this pass, the list is sorted
+        if (!swapped) {
+            break;
+        }
+    }
 }
 
 template <typename T>
 void ArrayList<T>::insertionSort() {
-    // TODO
+    // Outer loop picks the element to be inserted (from index 1)
+    for (int i = 1; i < this->length; i++) {
+        // Inner loop "bubbles" the element down to its sorted position
+        for (int j = i; j > 0; j--) {
+            // Increment for the comparison
+            numComps++;
+            if (buffer[j] < buffer[j - 1]) {
+                // Swap the element down
+                swap(j, j - 1);
+                numSwaps++;
+            } else {
+                // Element is in its correct sorted position,
+                // so we can break the inner loop
+                break;
+            }
+        }
+    }
 }
 
 template <typename T>
 void ArrayList<T>::selectionSort() {
-    // TODO
-}
+    // Outer loop moves the boundary of the sorted subarray
+    for (int i = 0; i < this->length - 1; i++) {
+        // Find the index of the minimum element in the unsorted part
+        int minIndex = i;
+        for (int j = i + 1; j < this->length; j++) {
+            // Increment for the comparison
+            numComps++;
+            if (buffer[j] < buffer[minIndex]) {
+                minIndex = j;
+            }
+        }
 
+        // Swap the found minimum element with the first element
+        // of the unsorted part (only if it's not already in place)
+        if (minIndex != i) {
+            swap(i, minIndex);
+            numSwaps++;
+        }
+    }
+}
 /*******************************************************************************
  * No need to modify methods below :)
 *******************************************************************************/
@@ -195,3 +249,4 @@ ostream& operator<<(ostream& outStream, const ArrayList<T>& myObj) {
 
     return outStream;
 }
+
